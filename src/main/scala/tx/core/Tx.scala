@@ -1,8 +1,8 @@
 package tx.core
 
-trait Tx[A] {
+trait Tx {
 
-  type TxSessionType = TxSession[A]
+  def local[B](block: TxSession => B): B
 
-  def local[B](block: TxSessionType => B): B
+  def readOnly[B](block: TxSession => B): B
 }

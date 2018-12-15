@@ -1,12 +1,26 @@
-import scalikejdbc.DBSession
-import tx.core.Tx
+import tx.core.TxSession
 import tx.scalikejdbc.TxImpl
 
 object Scratchpad extends App {
 
-  val tx: Tx[DBSession] = new TxImpl
+  val tx = new TxImpl
+}
 
-  tx.local { implicit session =>
-    ???
+class BankService(bankRepository: BankRepository) {
+
+  val tx = new TxImpl
+
+  def makeTransaction(value: BigInt): Unit = {
+    tx.local { implicit session =>
+      bankRepository.saveDedit(value)
+      bankRepository.saveCredit(-value)
+    }
   }
+}
+
+class BankRepository {
+
+  def saveDedit(value: BigInt)(implicit session: TxSession): Unit = ()
+
+  def saveCredit(value: BigInt)(implicit session: TxSession): Unit = ()
 }

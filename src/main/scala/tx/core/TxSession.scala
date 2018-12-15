@@ -1,3 +1,5 @@
 package tx.core
 
-trait TxSession[A]
+import java.sql.Connection
+
+final case class TxSession(connection: Connection)
